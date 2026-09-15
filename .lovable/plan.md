@@ -37,4 +37,4 @@ Build a polished single-page portfolio that adapts the reference’s editorial r
 - Verify navigation, form behavior, animations, overflow, and readability at desktop and mobile viewport sizes.
 
 ## Required asset
-- Use Marwan’s real portrait after it is uploaded. Until then, the implementation can use a polished non-deceptive placeholder frame without inventing his likeness.
+- Use Marwan’s uploaded professional portrait in both the arched Home glass frame and the About section.
