@@ -18,6 +18,7 @@ import {
   X,
 } from "lucide-react";
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { toast } from "sonner";
 
 import portraitAsset from "@/assets/marwan-osama-portrait.png.asset.json";
 
@@ -93,23 +94,13 @@ function Portfolio() {
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState("Home");
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    const observers = navigation.map((name) => {
-      const target = document.getElementById(name.toLowerCase());
-      if (!target) return null;
-      const observer = new IntersectionObserver(([entry]) => entry?.isIntersecting && setActive(name), { rootMargin: "-35% 0px -55%" });
-      observer.observe(target);
-      return observer;
-    });
-    return () => { window.removeEventListener("scroll", onScroll); observers.forEach((observer) => observer?.disconnect()); };
-  }, []);
-
-  function submitContact(event: FormEvent<HTMLFormElement>) {
+  async function submitContact(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const form = new FormData(event.currentTarget);
+    const element = event.currentTarget;
+    const form = new FormData(element);
     const name = String(form.get("name") ?? "").trim();
     const email = String(form.get("email") ?? "").trim();
     const message = String(form.get("message") ?? "").trim();
@@ -119,7 +110,22 @@ function Portfolio() {
     if (message.length < 10) nextErrors["message"] = "Please write at least 10 characters.";
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length) return;
-    window.location.href = `mailto:marwanosama413@gmail.com?subject=${encodeURIComponent(`Portfolio enquiry from ${name}`)}&body=${encodeURIComponent(`${message}\n\nFrom: ${name} (${email})`)}`;
+    setSending(true);
+    try {
+      const response = await fetch("https://formsubmit.co/ajax/marwanosama413@gmail.com", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({ name, email, message, _subject: `New Portfolio Contact Message from ${name}` }),
+      });
+      if (!response.ok) throw new Error("Send failed");
+      setSent(true);
+      element.reset();
+      toast.success("Message sent!", { description: "Thanks for reaching out — Marwan will get back to you soon." });
+    } catch {
+      toast.error("Message couldn't be sent", { description: "Please try again, or email marwanosama413@gmail.com directly." });
+    } finally {
+      setSending(false);
+    }
   }
 
   return (
@@ -204,7 +210,7 @@ function Portfolio() {
       <section id="contact" className="section contact-section">
         <Reveal className="contact-grid">
           <div className="contact-copy"><p className="eyebrow eyebrow-light"><span />Get in touch</p><h2>Let’s build something together<span>.</span></h2><p>Have an idea for a mobile application or need help bringing your app concept to life? Feel free to get in touch.</p><div className="contact-links"><a href="mailto:marwanosama413@gmail.com"><Mail /><span><small>Email</small>marwanosama413@gmail.com</span></a><a href="tel:+201004467499"><Phone /><span><small>Phone</small>01004467499</span></a><a href="https://www.linkedin.com/in/marwan-osama413" target="_blank" rel="noreferrer"><Linkedin /><span><small>LinkedIn</small>/in/marwan-osama413</span></a><a href="https://www.github.com/Marwan-44" target="_blank" rel="noreferrer"><Github /><span><small>GitHub</small>/Marwan-44</span></a></div></div>
-          <form className="contact-form" onSubmit={submitContact} noValidate><div className="form-heading"><MessageCircle /><div><small>Start a conversation</small><h3>Tell me about your idea.</h3></div></div><label>Name<input name="name" maxLength={100} placeholder="Your name" aria-invalid={Boolean(errors["name"])} />{errors["name"] && <span>{errors["name"]}</span>}</label><label>Email<input name="email" type="email" maxLength={255} placeholder="you@example.com" aria-invalid={Boolean(errors["email"])} />{errors["email"] && <span>{errors["email"]}</span>}</label><label>Message<textarea name="message" maxLength={1000} rows={5} placeholder="What would you like to build?" aria-invalid={Boolean(errors["message"])} />{errors["message"] && <span>{errors["message"]}</span>}</label><button className="button button-primary form-button" type="submit">Send message <Send size={17} /></button></form>
+          <form className="contact-form" onSubmit={submitContact} noValidate><div className="form-heading"><MessageCircle /><div><small>Start a conversation</small><h3>Tell me about your idea.</h3></div></div><label>Name<input name="name" maxLength={100} placeholder="Your name" aria-invalid={Boolean(errors["name"])} />{errors["name"] && <span>{errors["name"]}</span>}</label><label>Email<input name="email" type="email" maxLength={255} placeholder="you@example.com" aria-invalid={Boolean(errors["email"])} />{errors["email"] && <span>{errors["email"]}</span>}</label><label>Message<textarea name="message" maxLength={1000} rows={5} placeholder="What would you like to build?" aria-invalid={Boolean(errors["message"])} />{errors["message"] && <span>{errors["message"]}</span>}</label><button className="button button-primary form-button" type="submit" disabled={sending}>{sending ? "Sending…" : "Send message"} {!sending && <Send size={17} />}</button>{sent && <p className="form-note form-note-success">Your message has been sent successfully — thank you for reaching out.</p>}<p className="form-note">Note: the very first message may send a one-time activation email to Marwan's inbox to enable delivery.</p></form>
         </Reveal>
       </section>
 
