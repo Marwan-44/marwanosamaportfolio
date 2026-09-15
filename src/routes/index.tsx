@@ -2,11 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import {
   ArrowDownRight,
   ArrowUpRight,
-  BriefcaseBusiness,
   ChevronRight,
   Code2,
-  Cpu,
-  ExternalLink,
   Github,
   GraduationCap,
   Layers3,
@@ -117,9 +114,9 @@ function Portfolio() {
     const email = String(form.get("email") ?? "").trim();
     const message = String(form.get("message") ?? "").trim();
     const nextErrors: Record<string, string> = {};
-    if (name.length < 2) nextErrors.name = "Please enter your name.";
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) nextErrors.email = "Please enter a valid email.";
-    if (message.length < 10) nextErrors.message = "Please write at least 10 characters.";
+    if (name.length < 2) nextErrors["name"] = "Please enter your name.";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) nextErrors["email"] = "Please enter a valid email.";
+    if (message.length < 10) nextErrors["message"] = "Please write at least 10 characters.";
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length) return;
     window.location.href = `mailto:marwanosama413@gmail.com?subject=${encodeURIComponent(`Portfolio enquiry from ${name}`)}&body=${encodeURIComponent(`${message}\n\nFrom: ${name} (${email})`)}`;
@@ -207,7 +204,7 @@ function Portfolio() {
       <section id="contact" className="section contact-section">
         <Reveal className="contact-grid">
           <div className="contact-copy"><p className="eyebrow eyebrow-light"><span />Get in touch</p><h2>Let’s build something together<span>.</span></h2><p>Have an idea for a mobile application or need help bringing your app concept to life? Feel free to get in touch.</p><div className="contact-links"><a href="mailto:marwanosama413@gmail.com"><Mail /><span><small>Email</small>marwanosama413@gmail.com</span></a><a href="tel:+201004467499"><Phone /><span><small>Phone</small>01004467499</span></a><a href="https://www.linkedin.com/in/marwan-osama413" target="_blank" rel="noreferrer"><Linkedin /><span><small>LinkedIn</small>/in/marwan-osama413</span></a><a href="https://www.github.com/Marwan-44" target="_blank" rel="noreferrer"><Github /><span><small>GitHub</small>/Marwan-44</span></a></div></div>
-          <form className="contact-form" onSubmit={submitContact} noValidate><div className="form-heading"><MessageCircle /><div><small>Start a conversation</small><h3>Tell me about your idea.</h3></div></div><label>Name<input name="name" maxLength={100} placeholder="Your name" aria-invalid={Boolean(errors.name)} />{errors.name && <span>{errors.name}</span>}</label><label>Email<input name="email" type="email" maxLength={255} placeholder="you@example.com" aria-invalid={Boolean(errors.email)} />{errors.email && <span>{errors.email}</span>}</label><label>Message<textarea name="message" maxLength={1000} rows={5} placeholder="What would you like to build?" aria-invalid={Boolean(errors.message)} />{errors.message && <span>{errors.message}</span>}</label><button className="button button-primary form-button" type="submit">Send message <Send size={17} /></button></form>
+          <form className="contact-form" onSubmit={submitContact} noValidate><div className="form-heading"><MessageCircle /><div><small>Start a conversation</small><h3>Tell me about your idea.</h3></div></div><label>Name<input name="name" maxLength={100} placeholder="Your name" aria-invalid={Boolean(errors["name"])} />{errors["name"] && <span>{errors["name"]}</span>}</label><label>Email<input name="email" type="email" maxLength={255} placeholder="you@example.com" aria-invalid={Boolean(errors["email"])} />{errors["email"] && <span>{errors["email"]}</span>}</label><label>Message<textarea name="message" maxLength={1000} rows={5} placeholder="What would you like to build?" aria-invalid={Boolean(errors["message"])} />{errors["message"] && <span>{errors["message"]}</span>}</label><button className="button button-primary form-button" type="submit">Send message <Send size={17} /></button></form>
         </Reveal>
       </section>
 
