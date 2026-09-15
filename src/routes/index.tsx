@@ -33,8 +33,8 @@ const technicalSkills = [
 const softSkills = ["Teamwork", "Communication", "Adaptability", "Self-Learning", "Agility", "Attention to Detail"];
 
 const projects = [
-  { number: "01", title: "Student Grade Management System", tech: "Kotlin", kind: "grades", description: "A CLI system for student records, grade statistics, and letter-grade conversion using mutable maps and conditional logic." },
-  { number: "02", title: "Expense Tracker", tech: "Kotlin", kind: "expense", description: "A personal expense manager with add, view, search, and remove operations, backed by data classes and careful input validation." },
+  { number: "01", title: "Student Grade Management System", tech: "Kotlin", kind: "grades", description: "A CLI system for student records, grade statistics, and letter-grade conversion using mutable maps and conditional logic.", repo: "https://github.com/Marwan-44/Student_Grade_Management_System" },
+  { number: "02", title: "Expense Tracker", tech: "Kotlin", kind: "expense", description: "A personal expense manager with add, view, search, and remove operations, backed by data classes and careful input validation.", repo: "https://github.com/Marwan-44/Expense_Tracker" },
   { number: "03", title: "Ball Animation Tool", tech: "Java / Swing", kind: "ball", description: "An event-driven desktop tool for animating a bouncing ball with controls for shape and animation delay." },
   { number: "04", title: "Arduino Smart Car", tech: "Arduino / Embedded", kind: "car", description: "An obstacle-aware smart car using ultrasonic sensing within approximately 20 cm and microcontroller-based motor control." },
   { number: "05", title: "Bank Management System", tech: "C++", kind: "bank", description: "An OOP banking simulation with branch and account-holder management, CRUD operations, linked lists, and trees." },
@@ -192,7 +192,7 @@ function Portfolio() {
 
       <section id="projects" className="section projects-section">
         <Reveal><SectionIntro eyebrow="Selected projects" title="Programming foundations, applied." copy="A selection of academic and personal projects that show how I approach logic, structure, interaction, and real-world problems." /></Reveal>
-        <div className="project-grid">{projects.map((project, index) => <Reveal key={project.title} className={`project-card project-${index + 1}`}><div className="project-meta"><span>{project.number}</span><b>{project.tech}</b></div><ProjectArt kind={project.kind} /><div className="project-copy"><h3>{project.title}</h3><p>{project.description}</p><span className="project-link">Foundation project <ArrowUpRight size={16} /></span></div></Reveal>)}</div>
+        <div className="project-grid">{projects.map((project, index) => <Reveal key={project.title} className={`project-card project-${index + 1}`}><div className="project-meta"><span>{project.number}</span><b>{project.tech}</b></div><ProjectArt kind={project.kind} /><div className="project-copy"><h3>{project.title}</h3><p>{project.description}</p>{project.repo ? <a className="project-link" href={project.repo} target="_blank" rel="noopener noreferrer"><span>View on GitHub <Github size={16} /></span><ArrowUpRight size={16} /></a> : <span className="project-link">Foundation project <ArrowUpRight size={16} /></span>}</div></Reveal>)}</div>
       </section>
 
       <section id="education" className="section education-section">
