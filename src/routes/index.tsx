@@ -93,23 +93,13 @@ function Portfolio() {
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState("Home");
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    const observers = navigation.map((name) => {
-      const target = document.getElementById(name.toLowerCase());
-      if (!target) return null;
-      const observer = new IntersectionObserver(([entry]) => entry?.isIntersecting && setActive(name), { rootMargin: "-35% 0px -55%" });
-      observer.observe(target);
-      return observer;
-    });
-    return () => { window.removeEventListener("scroll", onScroll); observers.forEach((observer) => observer?.disconnect()); };
-  }, []);
-
-  function submitContact(event: FormEvent<HTMLFormElement>) {
+  async function submitContact(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const form = new FormData(event.currentTarget);
+    const element = event.currentTarget;
+    const form = new FormData(element);
     const name = String(form.get("name") ?? "").trim();
     const email = String(form.get("email") ?? "").trim();
     const message = String(form.get("message") ?? "").trim();
@@ -119,7 +109,22 @@ function Portfolio() {
     if (message.length < 10) nextErrors["message"] = "Please write at least 10 characters.";
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length) return;
-    window.location.href = `mailto:marwanosama413@gmail.com?subject=${encodeURIComponent(`Portfolio enquiry from ${name}`)}&body=${encodeURIComponent(`${message}\n\nFrom: ${name} (${email})`)}`;
+    setSending(true);
+    try {
+      const response = await fetch("https://formsubmit.co/ajax/marwanosama413@gmail.com", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({ name, email, message, _subject: `New Portfolio Contact Message from ${name}` }),
+      });
+      if (!response.ok) throw new Error("Send failed");
+      setSent(true);
+      element.reset();
+      toast.success("Message sent!", { description: "Thanks for reaching out — Marwan will get back to you soon." });
+    } catch {
+      toast.error("Message couldn't be sent", { description: "Please try again, or email marwanosama413@gmail.com directly." });
+    } finally {
+      setSending(false);
+    }
   }
 
   return (
