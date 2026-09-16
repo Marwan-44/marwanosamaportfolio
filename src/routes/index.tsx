@@ -97,6 +97,37 @@ function Portfolio() {
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
 
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            const match = navigation.find((item) => item.toLowerCase() === entry.target.id);
+            if (match) setActive(match);
+          }
+        }
+      },
+      { rootMargin: "-40% 0px -55% 0px" }
+    );
+    navigation.forEach((item) => {
+      const el = document.getElementById(item.toLowerCase());
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, []);
+
+  function handleNavClick(item: string) {
+    setActive(item);
+    setMenuOpen(false);
+  }
+
   async function submitContact(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const element = event.currentTarget;
@@ -133,11 +164,11 @@ function Portfolio() {
       <header className={`site-header ${scrolled ? "header-scrolled" : ""}`}>
         <nav className="nav-wrap" aria-label="Main navigation">
           <a href="#home" className="brand" aria-label="Marwan Osama home"><span>MO</span><b>Marwan Osama</b></a>
-          <div className="desktop-nav">{navigation.map((item) => <a key={item} href={`#${item.toLowerCase()}`} className={active === item ? "nav-active" : ""}>{item}</a>)}</div>
-          <a href="#contact" className="nav-cta">Let’s talk <ArrowUpRight size={16} /></a>
+          <div className="desktop-nav">{navigation.map((item) => <a key={item} href={`#${item.toLowerCase()}`} onClick={() => handleNavClick(item)} className={active === item ? "nav-active" : ""}>{item}</a>)}</div>
+          <a href="#contact" className="nav-cta" onClick={() => handleNavClick("Contact")}>Let’s talk <ArrowUpRight size={16} /></a>
           <button className="menu-button" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu" aria-expanded={menuOpen}>{menuOpen ? <X /> : <Menu />}</button>
         </nav>
-        {menuOpen && <div className="mobile-nav">{navigation.map((item) => <a key={item} href={`#${item.toLowerCase()}`} onClick={() => setMenuOpen(false)}>{item}<ChevronRight size={16} /></a>)}</div>}
+        {menuOpen && <div className="mobile-nav">{navigation.map((item) => <a key={item} href={`#${item.toLowerCase()}`} onClick={() => handleNavClick(item)} className={active === item ? "nav-active" : ""}>{item}<ChevronRight size={16} /></a>)}</div>}
       </header>
 
       <section id="home" className="hero">
