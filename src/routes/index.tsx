@@ -97,6 +97,37 @@ function Portfolio() {
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
 
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            const match = navigation.find((item) => item.toLowerCase() === entry.target.id);
+            if (match) setActive(match);
+          }
+        }
+      },
+      { rootMargin: "-40% 0px -55% 0px" }
+    );
+    navigation.forEach((item) => {
+      const el = document.getElementById(item.toLowerCase());
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, []);
+
+  function handleNavClick(item: string) {
+    setActive(item);
+    setMenuOpen(false);
+  }
+
   async function submitContact(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const element = event.currentTarget;
