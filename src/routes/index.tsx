@@ -164,11 +164,11 @@ function Portfolio() {
       <header className={`site-header ${scrolled ? "header-scrolled" : ""}`}>
         <nav className="nav-wrap" aria-label="Main navigation">
           <a href="#home" className="brand" aria-label="Marwan Osama home"><span>MO</span><b>Marwan Osama</b></a>
-          <div className="desktop-nav">{navigation.map((item) => <a key={item} href={`#${item.toLowerCase()}`} className={active === item ? "nav-active" : ""}>{item}</a>)}</div>
-          <a href="#contact" className="nav-cta">Let’s talk <ArrowUpRight size={16} /></a>
+          <div className="desktop-nav">{navigation.map((item) => <a key={item} href={`#${item.toLowerCase()}`} onClick={() => handleNavClick(item)} className={active === item ? "nav-active" : ""}>{item}</a>)}</div>
+          <a href="#contact" className="nav-cta" onClick={() => handleNavClick("Contact")}>Let’s talk <ArrowUpRight size={16} /></a>
           <button className="menu-button" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu" aria-expanded={menuOpen}>{menuOpen ? <X /> : <Menu />}</button>
         </nav>
-        {menuOpen && <div className="mobile-nav">{navigation.map((item) => <a key={item} href={`#${item.toLowerCase()}`} onClick={() => setMenuOpen(false)}>{item}<ChevronRight size={16} /></a>)}</div>}
+        {menuOpen && <div className="mobile-nav">{navigation.map((item) => <a key={item} href={`#${item.toLowerCase()}`} onClick={() => handleNavClick(item)} className={active === item ? "nav-active" : ""}>{item}<ChevronRight size={16} /></a>)}</div>}
       </header>
 
       <section id="home" className="hero">
