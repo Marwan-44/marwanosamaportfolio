@@ -198,8 +198,10 @@ function Portfolio() {
           <div className="about-layout">
             <div className="about-photo"><img src={portraitAsset.url} alt="Portrait of Marwan Osama" loading="lazy" /><span>Open to opportunities</span></div>
             <div className="about-content">
-              <p className="about-lead">I’m a Computer Science student and aspiring Flutter Mobile Developer passionate about building mobile applications and continuously improving my development skills.</p>
-              <p>I enjoy turning ideas into functional, clean, and user-friendly applications while strengthening my knowledge of software development and problem solving.</p>
+              <p className="about-tagline">Turning ideas into meaningful mobile experiences.</p>
+              <p className="about-lead">My journey into mobile development started with a simple curiosity: how can an idea become something people can actually use?</p>
+              <p>As a Computer Science student and aspiring Flutter Mobile Developer, I’ve been building my skills by turning that curiosity into real applications. Along the way, I’ve learned that good development isn’t just about writing code — it’s about understanding a problem, simplifying it, and creating an experience that feels natural to the user.</p>
+              <p>I’m passionate about building clean, practical, and user-focused mobile applications with Flutter. I’m continuously improving my development and problem-solving skills, with the goal of creating products that turn ideas into useful digital experiences.</p>
               <div className="info-grid">
                 <div><small>Role</small><b>Flutter Mobile Developer</b></div><div><small>Education</small><b>Bachelor of Computer Science</b></div>
                 <div><small>University</small><b>October 6 University</b></div><div><small>Graduation</small><b>Expected 2027</b></div>
