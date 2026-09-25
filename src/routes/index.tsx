@@ -194,11 +194,10 @@ function Portfolio() {
 
       <section id="about" className="section light-section">
         <Reveal>
-          <SectionIntro eyebrow="About me" title="Building the foundations for thoughtful mobile products." />
+          <SectionIntro eyebrow="About me" title="Building ideas into mobile experiences." />
           <div className="about-layout">
             <div className="about-photo"><img src={portraitAsset.url} alt="Portrait of Marwan Osama" loading="lazy" /><span>Open to opportunities</span></div>
             <div className="about-content">
-              <p className="about-tagline">Turning ideas into meaningful mobile experiences.</p>
               <p className="about-lead">My journey into mobile development started with a simple curiosity: how can an idea become something people can actually use?</p>
               <p>As a Computer Science student and aspiring Flutter Mobile Developer, I’ve been building my skills by turning that curiosity into real applications. Along the way, I’ve learned that good development isn’t just about writing code — it’s about understanding a problem, simplifying it, and creating an experience that feels natural to the user.</p>
               <p>I’m passionate about building clean, practical, and user-focused mobile applications with Flutter. I’m continuously improving my development and problem-solving skills, with the goal of creating products that turn ideas into useful digital experiences.</p>
